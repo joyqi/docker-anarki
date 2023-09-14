@@ -1,0 +1,19 @@
+services:
+  anarki:
+    image: arcnews:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - anarki:/anarki/apps/news/www
+      - ./static:/anarki/apps/news/static
+    environment:
+      - "SITE_NAME=Nerd News"
+      - "SITE_DESC=News for Nerds"
+      - SITE_URL=https://news.joyqi.com
+      - SITE_ADMIN=joyqi
+      - SITE_COLOR=BBBBBB
+      - PARENT_URL=https://joyqi.com
+      - LOGO_URL=https://joyqi.com/static/logo.png
+
+volumes:
+  anarki:

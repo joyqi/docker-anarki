@@ -36,27 +36,37 @@ replace_news_color() {
     sed -i "s|(color 180 180 180)|(color $r $g $b)|g" $root_path/news.arc
 }
 
+replace_args() {
+    sed -i "s|arc.sh -i|arc.sh $1|g" $root_path/run-news
+}
+
 replace_news() {
     sed -i "s|[\"]$1[\"]|\"$2\"|g" $root_path/news.arc
 }
 
-# Init dirs
-check_and_make "www/logs"
-check_and_make "www/page"
-check_and_make "www/profile"
-check_and_make "www/story"
-check_and_make "www/vote"
-check_and_make "www/tmp"
-check_and_copy "static" "static-copy"
+if [ ! -e "$root_path/init" ]; then
+    echo "initializing news.arc..."
 
-# Set up admin
-echo $SITE_ADMIN > $root_path/www/admins
+    # Init dirs
+    check_and_make "www/logs"
+    check_and_make "www/page"
+    check_and_make "www/profile"
+    check_and_make "www/story"
+    check_and_make "www/vote"
+    check_and_make "www/tmp"
+    check_and_copy "static" "static-copy"
 
-replace_news "Anarki" $SITE_NAME
-replace_news "http://site.example.com" $SITE_URL
-replace_news "http://github.com/arclanguage/anarki" $PARENT_URL
-replace_news "What this site is about." $SITE_DESC
-replace_news "arc.png" $SITE_LOGO
-replace_news_color $SITE_COLOR
+    # Set up admin
+    echo $SITE_ADMIN > $root_path/www/admins
 
-cd $root_path && ./run-news
+    replace_news "Anarki" $SITE_NAME
+    replace_news "http://site.example.com" $SITE_URL
+    replace_news "http://github.com/arclanguage/anarki" $PARENT_URL
+    replace_news "What this site is about." $SITE_DESC
+    replace_news "arc.png" $SITE_LOGO
+    replace_news_color $SITE_COLOR
+
+    date > $root_path/init
+fi
+
+cd $root_path && nohup ./run-news
