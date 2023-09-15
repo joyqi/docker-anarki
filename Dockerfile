@@ -1,4 +1,4 @@
-FROM racket/racket:latest
+FROM debian:stable-slim
 
 ENV SITE_NAME="My Site"
 ENV SITE_URL="https://news.ycombinator.com"
@@ -10,7 +10,7 @@ ENV SITE_LOGO="arc.png"
 
 WORKDIR /anarki
 
-RUN apt update && apt install --no-install-recommends -y git \
+RUN apt update && apt install --no-install-recommends -y racket git \
     && git clone --depth 1 https://github.com/arclanguage/anarki.git . \
     && raco pkg install --auto sha \
     && ./arc.sh tests.arc && rm -rf ./www \
