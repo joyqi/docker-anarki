@@ -1,0 +1,24 @@
+diff --git a/ac.rkt b/ac.rkt
+index 3cf56da..a4d710a 100644
+--- a/ac.rkt
++++ b/ac.rkt
+@@ -1439,11 +1439,15 @@ Arc 3.2 documentation: https://arclanguage.github.io/ref.
+ "))
+   (tl2 interactive?))
+ 
+-(define (tl-with-main-settings)
+-  (parameterize ([current-namespace main-namespace]
+-                 [current-readtable bracket-readtable])
+-    (tl)))
++;(define (tl-with-main-settings)
++;  (parameterize ([current-namespace main-namespace]
++;                 [current-readtable bracket-readtable])
++;    (tl)))
+ 
++(define (tl-with-main-settings)
++  (let loop ()
++    (sleep 1) ; sleep for 1 second
++    (loop)))
+ 
+ (define (trash-whitespace)
+   (when (and (char-ready?) (char-whitespace? (peek-char)))
