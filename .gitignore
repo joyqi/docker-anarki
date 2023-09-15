@@ -3,3 +3,5 @@
 .*.swo
 ._*
 .DS_Store
+/static
+docker-compose.yml

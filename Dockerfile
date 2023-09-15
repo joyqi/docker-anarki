@@ -10,10 +10,10 @@ ENV SITE_LOGO="arc.png"
 
 WORKDIR /anarki
 
-RUN apt update && apt install --no-install-recommends -y racket git \
+RUN apt update && apt install --no-install-recommends -y racket git ca-certificates sqlite3 \
     && git clone --depth 1 https://github.com/arclanguage/anarki.git . \
     && raco pkg install --auto sha \
-    && ./arc.sh tests.arc && rm -rf ./www \
+    && ./arc.sh -n tests.arc && rm -rf ./www \
     && mv ./apps/news/static ./apps/news/static-copy
 
 # Copy entrypoint script
