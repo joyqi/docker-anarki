@@ -4,4 +4,6 @@
 ._*
 .DS_Store
 /static
+/news
+/dma
 docker-compose.yml

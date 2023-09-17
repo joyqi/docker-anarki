@@ -22,3 +22,80 @@ index 3cf56da..a4d710a 100644
  
  (define (trash-whitespace)
    (when (and (char-ready?) (char-whitespace? (peek-char)))
+diff --git a/lib/app.arc b/lib/app.arc
+index 77e0d97..862ebe3 100644
+--- a/lib/app.arc
++++ b/lib/app.arc
+@@ -218,34 +218,45 @@ Returns nil if no logged-in user."
+     (input "u" "" 20)
+     (submit "Send reset email")))
+ 
+-($ (require net/smtp net/head))
++;($ (require net/smtp net/head))
++;(def email-forgotpw-link (user email)
++;  (withs (app-email  (map string (readfile "www/app-email"))
++;          to         ($.list email)
++;          message    ($.list (string
++;                             (trim site-url* 'end #\/)
++;                             (flink (fn ignore (forgotpw-reset-page user)))))
++;          from       (app-email 0)
++;          smtp-srv   (app-email 1)
++;          auth-user  (app-email 2)
++;          pw         (app-email 3)
++;          header     ($.standard-message-header
++;                       from
++;                       to
++;                       $.null
++;                       $.null
++;                       "Reset your password"))
++;    ($.keyword-apply
++;      $.smtp-send-message
++;      ($.map $.string->keyword ($.list
++;        "auth-passwd"
++;        "auth-user"
++;        "tls-encode"))
++;      ($.list
++;        pw
++;        auth-user
++;        $.ports->ssl-ports)
++;      ($.list smtp-srv from to header message))))
++
+ (def email-forgotpw-link (user email)
+-  (withs (app-email  (map string (readfile "www/app-email"))
+-          to         ($.list email)
+-          message    ($.list (string
+-                             (trim site-url* 'end #\/)
+-                             (flink (fn ignore (forgotpw-reset-page user)))))
+-          from       (app-email 0)
+-          smtp-srv   (app-email 1)
+-          auth-user  (app-email 2)
+-          pw         (app-email 3)
+-          header     ($.standard-message-header
+-                       from
+-                       to
+-                       $.null
+-                       $.null
+-                       "Reset your password"))
+-    ($.keyword-apply
+-      $.smtp-send-message
+-      ($.map $.string->keyword ($.list
+-        "auth-passwd"
+-        "auth-user"
+-        "tls-encode"))
+-      ($.list
+-        pw
+-        auth-user
+-        $.ports->ssl-ports)
+-      ($.list smtp-srv from to header message))))
++; reset pw email with sendmail
++  (pipe-to (system "sendmail -t")
++    (prn "To: " email)
++    (prn "Subject: reset your password")
++    (prn "From: " (emails* admins*.0))
++    (prn)
++    (prn "To reset your password, go here:")
++    (prn site-url* (flink (fn ignore
++                            (forgotpw-reset-page user))))))
+ 
+ (def forgotpw-reset-page (user (o msg))
+   (if msg (pr msg))
