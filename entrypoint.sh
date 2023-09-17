@@ -60,11 +60,11 @@ if [ ! -e "$app_path/init" ]; then
     # Set up admin
     echo $SITE_ADMIN > $app_path/www/admins
 
-    replace_news "Anarki" $SITE_NAME
-    replace_news "http://site.example.com" $SITE_URL
-    replace_news "http://github.com/arclanguage/anarki" $PARENT_URL
-    replace_news "What this site is about." $SITE_DESC
-    replace_news "arc.png" $SITE_LOGO
+    replace_news "Anarki" "$SITE_NAME"
+    replace_news "http://site.example.com" "$SITE_URL"
+    replace_news "http://github.com/arclanguage/anarki" "$PARENT_URL"
+    replace_news "What this site is about." "$SITE_DESC"
+    replace_news "arc.png" "$SITE_LOGO"
     replace_news_color $SITE_COLOR
     replace_args "-i -n"
 

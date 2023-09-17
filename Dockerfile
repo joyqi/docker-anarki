@@ -7,6 +7,13 @@ ENV SITE_ADMIN="admin"
 ENV SITE_COLOR="B4B4B4"
 ENV PARENT_URL="https://www.ycombinator.com"
 ENV SITE_LOGO="arc.png"
+ENV SMTP_HOST="smtp.example.com"
+ENV SMTP_PORT="587"
+ENV SMTP_USER="user"
+ENV SMTP_PASS="pass"
+ENV SMTP_FROM="no-reply@example.com"
+ENV SMTP_TLS="true"
+ENV SMTP_STARTTLS="true"
 
 WORKDIR /anarki
 
