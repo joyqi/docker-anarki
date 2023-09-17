@@ -91,7 +91,7 @@ index 77e0d97..862ebe3 100644
 +  (pipe-to (system "sendmail -t")
 +    (prn "To: " email)
 +    (prn "Subject: reset your password")
-+    (prn "From: " (emails* admins*.0))
++    (prn "From: from@example.com")
 +    (prn)
 +    (prn "To reset your password, go here:")
 +    (prn site-url* (flink (fn ignore

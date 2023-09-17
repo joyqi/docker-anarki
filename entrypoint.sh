@@ -45,6 +45,25 @@ replace_news() {
     sed -i "s|[\"]$1[\"]|\"$2\"|g" $app_path/news.arc
 }
 
+config_smtp() {
+    echo "$SMTP_USER|$SMTP_HOST:$SMTP_PASS" > /etc/dma/auth.conf
+
+    echo "SMARTHOST $SMTP_HOST" > /etc/dma/dma.conf
+    echo "PORT $SMTP_PORT" >> /etc/dma/dma.conf
+    echo "AUTHPATH /etc/dma/auth.conf" >> /etc/dma/dma.conf
+    echo "MASQUERADE $SMTP_FROM" >> /etc/dma/dma.conf
+
+    if [ "$SMTP_TLS" = "true" ]; then
+        echo "SECURETRANSFER" >> /etc/dma/dma.conf
+    fi
+
+    if [ "$SMTP_STARTTLS" = "true" ]; then
+        echo "STARTTLS" >> /etc/dma/dma.conf
+    fi
+
+    sed -i "s|from@example.com|$SMTP_FROM|g" patch.diff
+}
+
 if [ ! -e "$app_path/init" ]; then
     echo "initializing news.arc..."
 
@@ -67,6 +86,7 @@ if [ ! -e "$app_path/init" ]; then
     replace_news "arc.png" "$SITE_LOGO"
     replace_news_color $SITE_COLOR
     replace_args "-i -n"
+    config_smtp
 
     # Apply patch
     git apply patch.diff
